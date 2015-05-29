@@ -38,25 +38,32 @@ typedef enum {
 	TRUE = 1, FALSE = 0
 } BOOL;
 
+/*yiji*/
+typedef struct
+{
+	unsigned int pageNum;
+	unsigned int pageIndex;	
+}OuterPageTableItem,*Ptr_OuterPageTableItem;
 
 
 /* 页表项 */
 typedef struct
 {
-	unsigned int pageNum;
 	unsigned int blockNum; //物理块号
 	BOOL filled; //页面装入特征位
 	BYTE proType; //页面保护类型
 	BOOL edited; //页面修改标识
 	unsigned long auxAddr; //外存地址
 	unsigned long count; //页面使用计数器
+	unsigned int oldcount; //lao hua
+	unsigned int processNum; //jing cheng
 } PageTableItem, *Ptr_PageTableItem;
 
 /* 访存请求类型 */
 typedef enum { 
 	REQUEST_READ, 
 	REQUEST_WRITE, 
-	REQUEST_EXECUTE 
+	REQUEST_EXECUTE
 } MemoryAccessRequestType;
 
 /* 访存请求 */
@@ -65,6 +72,7 @@ typedef struct
 	MemoryAccessRequestType reqType; //访存请求类型
 	unsigned long virAddr; //虚地址
 	BYTE value; //写请求的值
+	unsigned int processNum; //jingcheng 
 } MemoryAccessRequest, *Ptr_MemoryAccessRequest;
 
 
@@ -79,7 +87,8 @@ typedef enum {
 	ERROR_FILE_CLOSE_FAILED, //文件关闭失败
 	ERROR_FILE_SEEK_FAILED, //文件指针定位失败
 	ERROR_FILE_READ_FAILED, //文件读取失败
-	ERROR_FILE_WRITE_FAILED //文件写入失败
+	ERROR_FILE_WRITE_FAILED, //文件写入失败
+	ERROR_PROCESS_WRONG      //process wrong
 } ERROR_CODE;
 
 /* 产生访存请求 */
@@ -93,6 +102,9 @@ void do_page_fault(Ptr_PageTableItem);
 
 /* LFU页面替换 */
 void do_LFU(Ptr_PageTableItem);
+
+/*oldsuan fa*/
+void do_OLD(Ptr_PageTableItem);
 
 /* 装入页面 */
 void do_page_in(Ptr_PageTableItem, unsigned in);
