@@ -221,7 +221,7 @@ void do_LFU(Ptr_PageTableItem ptr_pageTabIt)
 	printf("没有空闲物理块，开始进行LFU页面替换...\n");
 	for (i = 0, min = 0xFFFFFFFF, page = 0; i < PAGE_SUM; i++)
 	{
-		if (pageTable[i].count < min)
+		if ((pageTable[i].count < min)&&(pageTable[i].filled))
 		{
 			min = pageTable[i].count;
 			page = i;
@@ -255,7 +255,7 @@ void do_OLD(Ptr_PageTableItem ptr_pageTabIt)
 	printf("没有空闲物理块，开始进行OLD页面替换...\n");
 	for (i = 0, min = 0xFFFFFFFF, page = 0; i < PAGE_SUM; i++)
 	{
-		if (pageTable[i].oldcount < min)
+		if ((pageTable[i].oldcount < min)&&(pageTable[i].filled))
 		{
 			min = pageTable[i].oldcount;
 			page = i;
